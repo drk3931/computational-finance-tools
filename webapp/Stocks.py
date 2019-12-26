@@ -23,8 +23,9 @@ def getPrice(symbol1,symbol2,startDate = dt.datetime(2019,1,1),endDate = dt.date
     prices2 = df2['Adj Close'].pct_change()
 
     fig,ax = plt.subplots()
-    ax.plot(prices)
-    ax.plot(prices2)
+    ax.plot(prices,label=symbol1)
+    ax.plot(prices2,label=symbol2)
+    ax.legend()
 
     return mpld3.fig_to_html(fig)
 
