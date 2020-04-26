@@ -17,7 +17,7 @@ class InvalidUsage(Exception):
 app = Flask(__name__)
 @app.after_request
 def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', 'https://drk3931.github.io/')
+  response.headers.add('Access-Control-Allow-Origin', 'https://drk3931.github.io')
   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
   response.headers.add('Access-Control-Allow-Methods', 'POST')
   return response
