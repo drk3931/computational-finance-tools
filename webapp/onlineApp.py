@@ -4,7 +4,9 @@ from flask import request,Response
 from flask import jsonify
 import json
 import Stocks
+import os
 
+port = int(os.environ.get("PORT", 5000))
 
 class InvalidUsage(Exception):
   def __init__(self, message, status_code=400, payload=None):
@@ -49,4 +51,4 @@ def stockData():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',port=port)
