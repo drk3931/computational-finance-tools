@@ -41,6 +41,7 @@ def stockData():
     validSymbol2 = Stocks.validSymbol(reqBody['symbol2'])
     if validSymbol1 and validSymbol2:
       chart = Stocks.getPrice(reqBody['symbol1'],reqBody['symbol2'])
+      response.headers.add('Access-Control-Allow-Origin', '*')
       return chart,200
     else:
       raise InvalidUsage('Please enter a valid symbol.',status_code=400)
