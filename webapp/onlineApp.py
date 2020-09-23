@@ -6,7 +6,6 @@ from flask import jsonify
 import json
 import Stocks
 
-from flask_cors import CORS
 
 
 
@@ -19,7 +18,13 @@ class InvalidUsage(Exception):
 
 
 app = Flask(__name__)
-CORS(app)
+
+def _build_cors_prelight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
 
 
 
@@ -33,6 +38,9 @@ def handleError(invUsage):
 def stockData():
   reqBody = request.json
 
+  if request.method == "OPTIONS": # CORS preflight
+        return _build_cors_prelight_response()
+
   if reqBody is None:
     raise InvalidUsage('Please include 2 symbols.')
 
@@ -40,9 +48,8 @@ def stockData():
     validSymbol1 = Stocks.validSymbol(reqBody['symbol1'])
     validSymbol2 = Stocks.validSymbol(reqBody['symbol2'])
     if validSymbol1 and validSymbol2:
-      response = flask.jsonify({})
+      response = flask.jsonify({'chart': Stocks.getPrice(reqBody['symbol1'],reqBody['symbol2'])})
       response.headers.add('Access-Control-Allow-Origin', '*')
-      response.data.add('chart', Stocks.getPrice(reqBody['symbol1'],reqBody['symbol2']))
       return response,200
     else:
       raise InvalidUsage('Please enter a valid symbol.',status_code=400)
