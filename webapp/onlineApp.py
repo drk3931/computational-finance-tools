@@ -1,12 +1,9 @@
 import configure
-import flask
-from flask import Flask,render_template,make_response
+from flask import Flask,render_template
 from flask import request,Response
 from flask import jsonify
 import json
 import Stocks
-
-
 
 
 class InvalidUsage(Exception):
@@ -18,14 +15,12 @@ class InvalidUsage(Exception):
 
 
 app = Flask(__name__)
-
-def _build_cors_prelight_response():
-    response = make_response()
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add('Access-Control-Allow-Headers', "*")
-    response.headers.add('Access-Control-Allow-Methods', "*")
-    return response
-
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', 'https://drk3931.github.io')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'POST')
+  return response
 
 
 @app.errorhandler(InvalidUsage)
@@ -38,9 +33,6 @@ def handleError(invUsage):
 def stockData():
   reqBody = request.json
 
-  if request.method == "OPTIONS": # CORS preflight
-        return _build_cors_prelight_response()
-
   if reqBody is None:
     raise InvalidUsage('Please include 2 symbols.')
 
@@ -48,9 +40,8 @@ def stockData():
     validSymbol1 = Stocks.validSymbol(reqBody['symbol1'])
     validSymbol2 = Stocks.validSymbol(reqBody['symbol2'])
     if validSymbol1 and validSymbol2:
-      response = flask.jsonify({'chart': Stocks.getPrice(reqBody['symbol1'],reqBody['symbol2'])})
-      response.headers.add('Access-Control-Allow-Origin', '*')
-      return response,200
+      chart = Stocks.getPrice(reqBody['symbol1'],reqBody['symbol2'])
+      return chart,200
     else:
       raise InvalidUsage('Please enter a valid symbol.',status_code=400)
   else:

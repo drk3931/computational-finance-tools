@@ -4,4 +4,3 @@ pandas-datareader
 flask
 mpld3
 gunicorn
-flask-cors
