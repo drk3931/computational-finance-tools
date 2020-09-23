@@ -1,4 +1,5 @@
 import configure
+import flask
 from flask import Flask,render_template
 from flask import request,Response
 from flask import jsonify
@@ -39,8 +40,10 @@ def stockData():
     validSymbol1 = Stocks.validSymbol(reqBody['symbol1'])
     validSymbol2 = Stocks.validSymbol(reqBody['symbol2'])
     if validSymbol1 and validSymbol2:
-      chart = Stocks.getPrice(reqBody['symbol1'],reqBody['symbol2'])
-      return chart,200
+      response = flask.jsonify({})
+      response.headers.add('Access-Control-Allow-Origin', '*')
+      response.data.add('chart', Stocks.getPrice(reqBody['symbol1'],reqBody['symbol2']))
+      return response,200
     else:
       raise InvalidUsage('Please enter a valid symbol.',status_code=400)
   else:
