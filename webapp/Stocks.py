@@ -8,6 +8,8 @@ import pandas_datareader.data as web
 
 
 
+
+
 def validSymbol(symbol):
     try:
         df = web.DataReader(symbol, 'yahoo', dt.datetime(2019,12,1), dt.datetime(2019,12,2))

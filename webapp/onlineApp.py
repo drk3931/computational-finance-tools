@@ -5,6 +5,9 @@ from flask import jsonify
 import json
 import Stocks
 
+from flask_cors import CORS
+
+
 
 class InvalidUsage(Exception):
   def __init__(self, message, status_code=400, payload=None):
@@ -15,12 +18,8 @@ class InvalidUsage(Exception):
 
 
 app = Flask(__name__)
-@app.after_request
-def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'POST')
-  return response
+CORS(app)
+
 
 
 @app.errorhandler(InvalidUsage)
@@ -41,7 +40,6 @@ def stockData():
     validSymbol2 = Stocks.validSymbol(reqBody['symbol2'])
     if validSymbol1 and validSymbol2:
       chart = Stocks.getPrice(reqBody['symbol1'],reqBody['symbol2'])
-      response.headers.add('Access-Control-Allow-Origin', '*')
       return chart,200
     else:
       raise InvalidUsage('Please enter a valid symbol.',status_code=400)
