@@ -1,6 +1,6 @@
 import configure
 import flask
-from flask import Flask,render_template
+from flask import Flask,render_template,make_response
 from flask import request,Response
 from flask import jsonify
 import json
