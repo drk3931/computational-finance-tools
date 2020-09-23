@@ -21,6 +21,10 @@ def after_request(response):
     header['Access-Control-Allow-Origin'] = '*'
     return response
 
+@app.route('/test', methods=["POST"])
+def stockData():
+    return "hello"
+
 
 @app.errorhandler(InvalidUsage)
 def handleError(invUsage):
