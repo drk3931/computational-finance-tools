@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import mpld3
 
-import Globals as globals
 import datetime as dt
 
 import pandas_datareader.data as web
