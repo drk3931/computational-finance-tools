@@ -3,4 +3,4 @@ pandas
 pandas-datareader
 flask
 mpld3
-gunicorn
+gunicorn==19.9.0
