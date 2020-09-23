@@ -15,7 +15,7 @@ def validSymbol(symbol):
         return False
     return True
 
-def getPrice(symbol1,symbol2,startDate = dt.datetime(2019,1,1),endDate = dt.datetime.now()):
+def getPrice(symbol1,symbol2,startDate = dt.datetime(2020,1,1),endDate = dt.datetime.now()):
     df = web.DataReader(symbol1, 'yahoo', startDate,endDate)
     df2 = web.DataReader(symbol2, 'yahoo', startDate,endDate)
 
